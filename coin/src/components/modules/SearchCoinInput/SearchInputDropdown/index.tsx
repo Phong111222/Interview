@@ -1,7 +1,8 @@
-import { FC, useState } from 'react';
-import { Container, StyledAutoComplete, StyledTextField } from './styles';
+import { ElementRef, forwardRef, useState } from 'react';
+import { Container, OptionContainer, StyledTextField } from './styles';
 
 import Option from './Option';
+import { Input, InputProps, TextField, TextFieldProps } from '@mui/material';
 
 export interface Option {
   label: string;
@@ -10,64 +11,56 @@ export interface Option {
   [key: string]: any;
 }
 
-interface Props {
-  searchValue: string;
+interface Props extends TextFieldProps<'standard'> {
   options: Option[];
   selected?: Option['key'];
-  onSelect?: (option: Option) => void;
-  onChange: (value: string) => void;
-  placeholder?: string;
+  onOptionSelect?: (option: Option) => void;
 }
 
-const SearchInputDropdown: FC<Props> = ({
-  searchValue,
-  options,
-  onChange,
-  placeholder,
-  onSelect,
-}) => {
-  const [open, setOpen] = useState(false);
+const SearchInputDropdown = forwardRef<HTMLInputElement, Props>(
+  (
+    {
+      options,
 
-  const onOpenDropdown = () => setOpen(true);
-  const onCloseDropdown = () => setOpen(false);
+      onOptionSelect,
+      ...rest
+    },
+    ref
+  ) => {
+    const [open, setOpen] = useState(false);
 
-  const _onSelect = (option: Option) => {
-    onSelect?.(option);
-    onCloseDropdown();
-  };
+    const onOpenDropdown = () => {
+      setOpen(true);
+    };
+    const onCloseDropdown = () => setOpen(false);
 
-  return (
-    <Container>
-      <StyledAutoComplete
-        open={open}
-        options={options}
-        inputValue={searchValue}
-        onInputChange={(_e, value) => onChange(value)}
-        popupIcon={<></>}
-        clearIcon={<></>}
-        renderInput={(params) => (
-          <StyledTextField
-            {...params}
-            onFocus={onOpenDropdown}
-            onBlur={onCloseDropdown}
-            placeholder={placeholder}
-          />
-        )}
-        renderOption={(_props, option) => {
-          const item = option as Option;
-          return (
+    const _onSelect = (option: Option) => {
+      onOptionSelect?.(option);
+      onCloseDropdown();
+    };
+
+    return (
+      <Container>
+        <StyledTextField
+          {...rest}
+          inputRef={ref}
+          onClick={() => onOpenDropdown()}
+          onBlur={() => onCloseDropdown()}
+        />
+        <OptionContainer open={open}>
+          {options.map((option) => (
             <Option
-              key={item.key}
-              icon={item.icon}
-              name={item.label}
-              data={item.data}
-              onClick={() => _onSelect(item)}
+              onClick={() => _onSelect(option)}
+              key={option.key}
+              name={option.label}
+              icon={option.icon}
+              data={option}
             />
-          );
-        }}
-      />
-    </Container>
-  );
-};
+          ))}
+        </OptionContainer>
+      </Container>
+    );
+  }
+);
 
 export default SearchInputDropdown;

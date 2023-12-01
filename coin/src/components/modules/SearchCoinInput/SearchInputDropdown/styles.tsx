@@ -1,26 +1,38 @@
-import { Box, TextField, styled, Autocomplete } from '@mui/material';
+import { Box, FormControl, TextField, styled } from '@mui/material';
 
-export const Container = styled(Box)(() => ({
+export const Container = styled(FormControl)(() => ({
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'center',
+  position: 'relative',
+  width: '100%',
 }));
 
 export const StyledTextField = styled(TextField)(({}) => ({
   height: '100%',
-}));
-
-export const StyledAutoComplete = styled(Autocomplete)(({}) => ({
   width: '100%',
-  height: '60px',
-  '& .MuiInputBase-root.MuiOutlinedInput-root': {
-    padding: '0px 12px',
-    transition: '100ms linear',
-    height: '100%',
-  },
-  '& .MuiFormControl-root': {
-    height: '100%',
-  },
 }));
 
-export const StyledOption = styled;
+export const OptionContainer = styled(Box)<{ open: boolean }>(
+  ({ theme, open }) => {
+    return {
+      background: theme.palette.common.white,
+      borderRadius: theme.shape.borderRadius,
+      zIndex: 9999,
+      transition: '300s linear',
+      position: 'absolute',
+      width: '100%',
+      maxHeight: 500,
+      bottom: 0,
+      color: 'black',
+      transform: 'translateY(100%)',
+      boxShadow: 'rgba(0, 0, 0, 0.1) 0px 4px 12px',
+      overflowY: 'auto',
+      ...(open
+        ? {
+            display: 'block',
+          }
+        : { display: 'none' }),
+    };
+  }
+);

@@ -7,7 +7,7 @@ const Container = styled(Box)(({ theme }) => ({
   alignItems: 'center',
   cursor: 'pointer',
   border: `0.5px solid ${theme.palette.common.lightGrey}`,
-  borderRadius: theme.palette.common.radius,
+  borderRadius: theme.shape.borderRadius,
 
   padding: '10px 8px',
   transition: '200ms ease-out',

@@ -1,15 +1,16 @@
-import { useCallback, useMemo } from 'react';
+import { useCallback, useEffect, useMemo, useRef } from 'react';
 
 const useDebounce = <Args extends any[], Type = void>(
   func: (...arg: Args) => Type,
   duration: number = 300
 ): ReturnType<typeof debounce> => {
+  const timerRef = useRef<any>();
+
   const debounce = useCallback(
     (func: Function) => {
-      let timer: any;
       return (...args: Args) => {
-        clearTimeout(timer);
-        timer = setTimeout(() => {
+        clearTimeout(timerRef.current);
+        timerRef.current = setTimeout(() => {
           func.apply(this, args);
         }, duration);
       };
@@ -17,7 +18,13 @@ const useDebounce = <Args extends any[], Type = void>(
     [duration]
   );
 
-  return useMemo(() => debounce(func), [duration, func]);
+  useEffect(() => {
+    return () => {
+      clearTimeout(timerRef.current);
+    };
+  }, []);
+
+  return useMemo(() => debounce(func), [func]);
 };
 
 export default useDebounce;

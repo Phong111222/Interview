@@ -32,7 +32,7 @@ export interface ListCoinParams {
 }
 
 export interface SearchCoinParams {
-  q?: string;
+  query?: string;
 }
 
 export interface SearchCoinsResponse {

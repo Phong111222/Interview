@@ -3,7 +3,7 @@ import TrendingCoinItem from './TrendingCoinItem';
 import { useCallback } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 
-import useListTrendingCoins from 'hooks/coin/useListTredingCoins';
+import useListTrendingCoins from 'hooks/coin/useListTrendingCoins';
 
 const Container = styled(Box)(() => ({}));
 
