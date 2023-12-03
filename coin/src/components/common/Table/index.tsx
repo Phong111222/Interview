@@ -1,4 +1,4 @@
-import { ReactElement, ReactNode, useMemo, useState } from 'react';
+import { ReactElement, ReactNode, useCallback, useMemo, useState } from 'react';
 import { Box, Table, TableSortLabel } from '@mui/material';
 import { styled, SxProps, Theme } from '@mui/material/styles';
 import TableBody from '@mui/material/TableBody';
@@ -15,7 +15,7 @@ export const generaValueFromMultipleFields = <O = {},>(
 
   if (!Array.isArray(sortBy)) {
     value = sortBy as keyof O;
-    return String(obj[value]);
+    return obj[value];
   }
 
   value = '';
@@ -27,8 +27,12 @@ export const generaValueFromMultipleFields = <O = {},>(
   return String(value);
 };
 
-export interface ColumnProps<T = void, ADDITIONAL_KEY = void, SortKey = void> {
-  title: string;
+export interface ColumnProps<
+  T = void,
+  ADDITIONAL_KEY extends string = '',
+  SortKey = void
+> {
+  title: ReactNode;
   renderNode?: (row: T) => ReactNode;
   className?: string;
   key?: keyof T | ADDITIONAL_KEY;
@@ -72,7 +76,7 @@ const StyledTableRow = styled(TableRow)((_) => ({
   '&:nth-of-type(odd)': {},
 }));
 
-const CustomTable = <T extends object = {}>({
+const CustomTable = <T extends Record<string, any> = {}>({
   columns,
   rows = [],
   isFetchingData,
@@ -106,6 +110,22 @@ const CustomTable = <T extends object = {}>({
     setSort(newSort);
   };
 
+  const checkSortByType = useCallback((a: any, b: any) => {
+    if (typeof a === 'undefined' || typeof b === 'undefined') {
+      return 0;
+    }
+
+    if (typeof a === 'number' && typeof b === 'number') {
+      return a - b;
+    }
+
+    if (typeof a === 'string' && typeof b === 'string') {
+      return a.localeCompare(b);
+    }
+
+    return 0;
+  }, []);
+
   const sortedRows = useMemo(() => {
     const sortedRows = Array.isArray(rows) ? [...rows] : [];
 
@@ -120,7 +140,8 @@ const CustomTable = <T extends object = {}>({
     switch (sort.sortType) {
       case 'asc':
         sortedRows.sort((a, b) =>
-          generaValueFromMultipleFields(a, sortBy).localeCompare(
+          checkSortByType(
+            generaValueFromMultipleFields(a, sortBy),
             generaValueFromMultipleFields(b, sortBy)
           )
         );
@@ -129,7 +150,8 @@ const CustomTable = <T extends object = {}>({
 
       default:
         sortedRows.sort((a, b) =>
-          generaValueFromMultipleFields(b, sortBy).localeCompare(
+          checkSortByType(
+            generaValueFromMultipleFields(b, sortBy),
             generaValueFromMultipleFields(a, sortBy)
           )
         );
@@ -142,7 +164,7 @@ const CustomTable = <T extends object = {}>({
 
   return (
     <TableContainer>
-      <Table aria-label='customized table'>
+      <Table aria-label="customized table">
         {!!columns.length && (
           <TableHead>
             {columns.map((column, index) => {
