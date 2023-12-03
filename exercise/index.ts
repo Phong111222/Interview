@@ -1,4 +1,4 @@
-const calculateMaxProfit = (stockPrices: number[]): number => {
+export const calculateMaxProfit = (stockPrices: number[]): number => {
   if (stockPrices.length <= 1) {
     return 0;
   }
@@ -11,7 +11,9 @@ const calculateMaxProfit = (stockPrices: number[]): number => {
     if (stockPrices[sellIndex] > stockPrices[buyIndex]) {
       const profit = stockPrices[sellIndex] - stockPrices[buyIndex];
 
-      maxProfit = Math.max(maxProfit, profit);
+      if (profit > maxProfit) {
+        maxProfit = profit;
+      }
 
       continue;
     }
@@ -21,5 +23,3 @@ const calculateMaxProfit = (stockPrices: number[]): number => {
 
   return maxProfit;
 };
-
-const stockPriceList = [3, 2, 4, 1, 5, 5, 6];

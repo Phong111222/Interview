@@ -25,7 +25,7 @@ const searchCoins = (
 const useSearchCoins = (initParams: SearchCoinParams, enable?: boolean) => {
   const [params, setParams] = useState(initParams);
 
-  const { refetch, isFetching, data } = useQuery(
+  const { refetch, isFetching, data, ...rest } = useQuery(
     CoinApi.searchCoin.key,
     ({ signal }) => searchCoins(params, signal as AbortSignal),
     {
@@ -37,13 +37,12 @@ const useSearchCoins = (initParams: SearchCoinParams, enable?: boolean) => {
     refetch();
   }, [params]);
 
-  // useEffect(() => {}, [getCoinWorker]);
-
   const handleChangeParams = useCallback((params: SearchCoinParams) => {
     setParams((prev) => ({ ...prev, ...params }));
   }, []);
 
   return {
+    ...rest,
     searchedCoins: data?.data,
     isFetching,
     handleChangeParams,

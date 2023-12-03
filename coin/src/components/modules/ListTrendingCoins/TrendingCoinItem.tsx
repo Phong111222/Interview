@@ -44,13 +44,13 @@ interface Props extends BoxProps<'div'> {
 
 const TrendingCoinItem: FC<Props> = ({ coin, ...rest }) => {
   return (
-    <Container {...rest} className="trending-coin-item">
+    <Container {...rest} className='trending-coin-item'>
       <CoinLogo>
-        <img src={coin.thumb} alt={coin.name} />
+        <img src={coin.thumb} alt={coin.name} loading='lazy' />
       </CoinLogo>
       <NameContainer>
-        <CoinName variant="body1">{coin.name}</CoinName>
-        <CoinSymbol variant="body2">{coin.symbol}</CoinSymbol>
+        <CoinName variant='body1'>{coin.name}</CoinName>
+        <CoinSymbol variant='body2'>{coin.symbol}</CoinSymbol>
       </NameContainer>
     </Container>
   );

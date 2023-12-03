@@ -1,35 +1,52 @@
-import { Box, Grid, styled } from '@mui/material';
-import TrendingCoinItem from './TrendingCoinItem';
-import { useCallback } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
-
 import useListTrendingCoins from 'hooks/coin/useListTrendingCoins';
+import useGoToCoinInfo from 'hooks/useGoToCoinInfo';
+import CustomTable from 'components/common/Table';
+import useTableTrendingCoinCols from './hook';
+
+import { Box, Typography, styled } from '@mui/material';
+import { TrendingCoinsResponse } from 'app-types/Coin';
+import { useCallback, useMemo } from 'react';
+import { useLocation } from 'react-router-dom';
+import AppRoutes from 'routers/index';
 
 const Container = styled(Box)(() => ({}));
+
+const TrendingTitle = styled(Typography)(({ theme }) => ({
+  color: theme.palette.common.black,
+  fontSize: 32,
+  fontWeight: 600,
+  marginBottom: 20,
+}));
 
 const LisTrendingCoins = () => {
   const { trendingCoins } = useListTrendingCoins();
 
-  const navigate = useNavigate();
+  const goToCoinInfo = useGoToCoinInfo();
 
   const location = useLocation();
 
   const onClickCoin = useCallback((coinId: string) => {
-    navigate(`${location.pathname}?coinId=${coinId}`);
+    goToCoinInfo(coinId);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   }, []);
 
+  const cols = useTableTrendingCoinCols();
+
+  const rows = useMemo(() => {
+    return trendingCoins?.coins.map((coin) => coin.item) || [];
+  }, [trendingCoins]);
+
   return (
-    <Container className="coin-trending-list">
-      <Grid container rowSpacing={3} columnSpacing={{ xs: 3 }}>
-        {trendingCoins?.coins?.map((coin) => (
-          <Grid key={coin.item.coin_id} item xs={6}>
-            <TrendingCoinItem
-              coin={coin.item}
-              onClick={() => onClickCoin(String(coin.item.coin_id))}
-            />
-          </Grid>
-        ))}
-      </Grid>
+    <Container className='coin-trending-list'>
+      {!location.pathname.includes(AppRoutes.home) && (
+        <TrendingTitle>Trending Coins</TrendingTitle>
+      )}
+
+      <CustomTable<TrendingCoinsResponse['coins'][number]['item']>
+        columns={cols}
+        rows={rows}
+        onRowClick={(row) => onClickCoin(String(row.id))}
+      />
     </Container>
   );
 };

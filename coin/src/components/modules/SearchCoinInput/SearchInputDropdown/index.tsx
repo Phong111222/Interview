@@ -1,8 +1,13 @@
-import { ElementRef, forwardRef, useState } from 'react';
-import { Container, OptionContainer, StyledTextField } from './styles';
+import React, { ReactNode, forwardRef, useCallback, useState } from 'react';
+import {
+  Container,
+  OptionContainer,
+  StyledTextField,
+  SectionContainer,
+} from './styles';
 
 import Option from './Option';
-import { Input, InputProps, TextField, TextFieldProps } from '@mui/material';
+import { ClickAwayListener, TextFieldProps } from '@mui/material';
 
 export interface Option {
   label: string;
@@ -15,52 +20,48 @@ interface Props extends TextFieldProps<'standard'> {
   options: Option[];
   selected?: Option['key'];
   onOptionSelect?: (option: Option) => void;
+  section?: ReactNode;
 }
 
 const SearchInputDropdown = forwardRef<HTMLInputElement, Props>(
-  (
-    {
-      options,
-
-      onOptionSelect,
-      ...rest
-    },
-    ref
-  ) => {
+  ({ options, onOptionSelect, section, ...rest }, ref) => {
     const [open, setOpen] = useState(false);
 
-    const onOpenDropdown = () => {
+    const onOpenDropdown = useCallback(() => {
       setOpen(true);
-    };
-    const onCloseDropdown = () => setOpen(false);
+    }, []);
+    const onCloseDropdown = useCallback(() => {
+      setOpen(false);
+    }, []);
 
-    const _onSelect = (option: Option) => {
+    const _onSelect = (e: React.MouseEvent, option: Option) => {
+      e.stopPropagation();
       onOptionSelect?.(option);
       onCloseDropdown();
     };
 
     return (
-      <Container>
-        <StyledTextField
-          {...rest}
-          inputRef={ref}
-          onClick={() => onOpenDropdown()}
-          onBlur={() => onCloseDropdown()}
-        />
-        <OptionContainer open={open}>
-          {options.map((option) => (
-            <Option
-              onClick={() => _onSelect(option)}
-              key={option.key}
-              name={option.label}
-              icon={option.icon}
-              data={option}
-            />
-          ))}
-        </OptionContainer>
-      </Container>
+      <ClickAwayListener onClickAway={onCloseDropdown}>
+        <Container onClick={() => onOpenDropdown()}>
+          <StyledTextField {...rest} inputRef={ref} />
+          <OptionContainer open={open}>
+            {section && <SectionContainer>{section}</SectionContainer>}
+            {options.map((option) => (
+              <Option
+                key={option.key}
+                onClick={(e) => _onSelect(e, option)}
+                name={option.label}
+                icon={option.icon}
+                data={option}
+              />
+            ))}
+          </OptionContainer>
+        </Container>
+      </ClickAwayListener>
     );
   }
 );
+
+SearchInputDropdown.displayName = 'SearchInputDropdown';
 
 export default SearchInputDropdown;

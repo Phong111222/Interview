@@ -4,6 +4,8 @@ declare module '@mui/material/styles/createPalette' {
   interface CommonColors {
     lightGrey: string;
     lightGreen: string;
+    darkBlue: string;
+    red: string;
   }
 }
 
@@ -18,7 +20,9 @@ const theme = createTheme({
 
     common: {
       lightGreen: '#68ad4a',
-      lightGrey: '#808080',
+      lightGrey: '#94A3B8',
+      darkBlue: '#1E293B',
+      red: '#FF3A32',
     },
   },
   components: {

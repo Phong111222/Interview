@@ -26,6 +26,8 @@ export const OptionContainer = styled(Box)<{ open: boolean }>(
       bottom: 0,
       color: 'black',
       transform: 'translateY(100%)',
+      border: `0.5px solid ${theme.palette.common.lightGrey}`,
+
       boxShadow: 'rgba(0, 0, 0, 0.1) 0px 4px 12px',
       overflowY: 'auto',
       ...(open
@@ -36,3 +38,10 @@ export const OptionContainer = styled(Box)<{ open: boolean }>(
     };
   }
 );
+
+export const SectionContainer = styled(Box)(({ theme }) => ({
+  color: theme.palette.common.lightGrey,
+  padding: '12px 8px',
+  fontSize: 14,
+  borderBottom: `0.5px solid ${theme.palette.common.lightGrey}`,
+}));

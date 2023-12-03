@@ -16,4 +16,8 @@ export const CoinApi = {
     key: 'search-coin',
     url: `/search`,
   },
+  coinOhlc: (id: string) => ({
+    key: `coinOHLC-${id}`,
+    url: `coins/${id}/ohlc`,
+  }),
 };

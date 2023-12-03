@@ -14,6 +14,9 @@ const Container = styled(Box)(({ theme }) => ({
 
 const StyledCoinIcon = styled(Avatar)(() => ({
   borderRadius: '100%',
+
+  width: 20,
+  height: 20,
 }));
 
 const NameContainer = styled(Box)(() => ({
@@ -22,7 +25,8 @@ const NameContainer = styled(Box)(() => ({
 }));
 
 const StyledTypography = styled(Typography)(() => ({
-  marginLeft: 24,
+  marginLeft: 12,
+  fontSize: 14,
 }));
 
 const CoinSymbol = styled(Box)(() => ({
@@ -42,7 +46,7 @@ const Option: FC<Props> = ({ name, icon, symbol, data, ...rest }) => {
     <Container {...rest}>
       <StyledCoinIcon src={icon} alt={name} />
       <NameContainer>
-        <StyledTypography variant="body1">{name}</StyledTypography>
+        <StyledTypography variant='body1'>{name}</StyledTypography>
         {Boolean(symbol?.length) && <CoinSymbol>{`(${symbol})`}</CoinSymbol>}
       </NameContainer>
     </Container>

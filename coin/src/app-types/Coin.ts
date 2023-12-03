@@ -84,6 +84,15 @@ export interface TrendingCoinsResponse {
   exchanges: unknown[];
 }
 
+export interface CoinInformationParams {
+  localization: string;
+  stickers: boolean;
+  market_data: boolean;
+  community_data: boolean;
+  developer_data: boolean;
+  sparkline: boolean;
+}
+
 export interface CoinResponse extends BaseModel {
   symbol: string;
 
@@ -94,12 +103,12 @@ export interface CoinResponse extends BaseModel {
   };
   detail_platforms: {
     ethereum: {
-      decimal_place: 18;
+      decimal_place: number;
       contract_address: string;
     };
   };
-  block_time_in_minutes: 0;
-  hashing_algorithm: null;
+  block_time_in_minutes: number;
+  hashing_algorithm: any;
   categories: string[];
   preview_listing: false;
   public_notice: null;
@@ -134,36 +143,36 @@ export interface CoinResponse extends BaseModel {
   country_origin: string;
   genesis_date: null;
   contract_address: string;
-  sentiment_votes_up_percentage: 73.21;
-  sentiment_votes_down_percentage: 26.79;
-  watchlist_portfolio_users: 610976;
-  market_cap_rank: 20;
-  coingecko_rank: 132;
-  coingecko_score: 42.68;
-  developer_score: 0;
-  community_score: 56.215;
-  liquidity_score: 66.79;
-  public_interest_score: 0.01;
+  sentiment_votes_up_percentage: number;
+  sentiment_votes_down_percentage: number;
+  watchlist_portfolio_users: number;
+  market_cap_rank: number;
+  coingecko_rank: number;
+  coingecko_score: number;
+  developer_score: number;
+  community_score: number;
+  liquidity_score: number;
+  public_interest_score: number;
   market_data: {
-    total_value_locked: null;
-    mcap_to_tvl_ratio: null;
-    fdv_to_tvl_ratio: null;
-    roi: null;
+    total_value_locked: null | number;
+    mcap_to_tvl_ratio: null | number;
+    fdv_to_tvl_ratio: null | number;
+    roi: null | number;
 
-    market_cap_rank: 20;
+    market_cap_rank: number;
 
-    market_cap_fdv_ratio: 0.59;
+    market_cap_fdv_ratio: number;
 
-    price_change_24h: -1.53082547065e-7;
-    price_change_percentage_24h: -1.8571;
-    price_change_percentage_7d: -5.4085;
-    price_change_percentage_14d: -8.62276;
-    price_change_percentage_30d: 3.23755;
-    price_change_percentage_60d: 10.90476;
-    price_change_percentage_200d: -6.46787;
-    price_change_percentage_1y: -14.40263;
-    market_cap_change_24h: -81643742.00665;
-    market_cap_change_percentage_24h: -1.68657;
+    price_change_24h: number;
+    price_change_percentage_24h: number;
+    price_change_percentage_7d: number;
+    price_change_percentage_14d: number;
+    price_change_percentage_30d: number;
+    price_change_percentage_60d: number;
+    price_change_percentage_200d: number;
+    price_change_percentage_1y: number;
+    market_cap_change_24h: number;
+    market_cap_change_percentage_24h: number;
 
     total_supply: number;
     max_supply: number | null;
@@ -319,3 +328,21 @@ export interface CoinResponse extends BaseModel {
     coin_id: string;
   }[];
 }
+
+export type CoinOhlcDay =
+  | '1'
+  | '7'
+  | '14'
+  | '30'
+  | '90'
+  | '180'
+  | '365'
+  | 'max';
+
+export interface CoinOhlcParams {
+  vs_currency: string;
+  days: CoinOhlcDay;
+  precision?: number;
+}
+
+export type CoinOhlcResponse = [number, number, number, number, number][];
