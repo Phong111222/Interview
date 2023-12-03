@@ -107,16 +107,26 @@ const Coin = () => {
   const coinPrice = useMemo(() => {
     return {
       usd: {
-        currentPrice: coinInfo?.market_data.current_price.usd.toFixed(2),
-        change24h:
-          coinInfo?.market_data.market_cap_change_percentage_24h_in_currency
-            .usd,
+        currentPrice: Number.parseFloat(
+          String(coinInfo?.market_data.current_price.usd)
+        ),
+        change24h: Number.parseFloat(
+          String(
+            coinInfo?.market_data.market_cap_change_percentage_24h_in_currency
+              .usd
+          )
+        ),
       },
       btc: {
-        currentPrice: coinInfo?.market_data.current_price.btc.toFixed(2),
-        change24h:
-          coinInfo?.market_data.market_cap_change_percentage_24h_in_currency
-            .btc,
+        currentPrice: Number.parseFloat(
+          String(coinInfo?.market_data.current_price.btc)
+        ),
+        change24h: Number.parseFloat(
+          String(
+            coinInfo?.market_data.market_cap_change_percentage_24h_in_currency
+              .btc
+          )
+        ),
       },
     };
   }, [coinInfo]);
@@ -126,7 +136,7 @@ const Coin = () => {
   }, []);
 
   return (
-    <Container className='coin-information'>
+    <Container className="coin-information">
       <Box
         sx={{
           display: 'flex',
@@ -136,24 +146,24 @@ const Coin = () => {
       >
         <NameContainer>
           {isFetching ? (
-            <Skeleton variant='circular' height={20} />
+            <Skeleton variant="circular" height={20} />
           ) : (
             <img
               src={coinInfo?.image.small}
               alt={coinInfo?.name}
-              loading='lazy'
+              loading="lazy"
             />
           )}
           {isFetching ? (
             <Skeleton width={150} />
           ) : (
-            <Box className='coin-name-container'>
-              <Typography className='coin-name' variant='h4'>
+            <Box className="coin-name-container">
+              <Typography className="coin-name" variant="h4">
                 {coinInfo?.name || <Skeleton width={50} />}
               </Typography>
               <Typography
-                variant='h5'
-                className='coin-symbol'
+                variant="h5"
+                className="coin-symbol"
               >{`${coinInfo?.symbol.toUpperCase()} Price`}</Typography>
             </Box>
           )}
@@ -169,7 +179,7 @@ const Coin = () => {
         {isFetching ? (
           <Skeleton width={200} />
         ) : (
-          <Typography className='coin-price-usd' variant='body2'>
+          <Typography className="coin-price-usd" variant="body2">
             {`$ ${coinPrice.usd.currentPrice}`}
 
             <PercentageContainer>
@@ -190,7 +200,7 @@ const Coin = () => {
         {isFetching ? (
           <Skeleton width={200} />
         ) : (
-          <Typography className='coin-price-btc' variant='body2'>
+          <Typography className="coin-price-btc" variant="body2">
             {`${coinPrice.btc.currentPrice} BTC`}
 
             <PercentageContainer>

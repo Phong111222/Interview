@@ -39,10 +39,10 @@ const useCoinOhlc = (
 
       return {
         x,
-        o,
-        h,
-        l,
-        c,
+        o: o.toFixed(10),
+        h: h.toFixed(10),
+        l: l.toFixed(10),
+        c: c.toFixed(10),
       };
     }),
     handleChangeParams,

@@ -1,6 +1,6 @@
 import { ChartData } from 'chart.js';
 import useCoinOhlc from 'hooks/coin/useGetCoinOHLC';
-import React, { createContext, useContext, useMemo } from 'react';
+import React, { createContext, useContext, useEffect, useMemo } from 'react';
 import { useParams } from 'react-router-dom';
 
 type ChartOhlc = ReturnType<typeof useCoinOhlc>;
@@ -31,6 +31,12 @@ const ChartProvider = ({ children }: { children: React.ReactNode }) => {
       ],
     };
   }, [ohlcData]);
+
+  useEffect(() => {
+    handleChangeParams({
+      days: '1',
+    });
+  }, [coinId]);
 
   return (
     <chartContext.Provider

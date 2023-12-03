@@ -105,13 +105,14 @@ const SearchCoinInput = () => {
   };
 
   return (
-    <Container className='coin-search'>
+    <Container className="coin-search">
       <SearchInputDropdown
         ref={inputRef}
+        placeholder="Search Coin..."
         options={searchDropdownProps?.options || []}
         section={
           isSearchingCoins ? (
-            <CoinSection text='Searching' icon={<SearchingCoinIcon />} />
+            <CoinSection text="Searching..." icon={<SearchingCoinIcon />} />
           ) : (
             searchDropdownProps?.sectionLabel || ''
           )

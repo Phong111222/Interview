@@ -42,11 +42,13 @@ const useTableTrendingCoinCols = () => {
       {
         title: 'Name',
         key: 'name',
+        sortBy: 'name',
+        sorter: true,
         renderNode: (row) => {
           return (
             <NameCol>
-              <img className='logo' src={row.small} alt={row.name} />
-              <Typography className='col-coin-name'>{row.name}</Typography>
+              <img className="logo" src={row.small} alt={row.name} />
+              <Typography className="col-coin-name">{row.name}</Typography>
             </NameCol>
           );
         },
@@ -54,15 +56,23 @@ const useTableTrendingCoinCols = () => {
       {
         title: 'Symbol',
         key: 'symbol',
+        sortBy: 'symbol',
+        sorter: true,
       },
       {
         title: 'Price (BTC)',
         key: 'price_btc',
-        renderNode: (row) => <>{row.price_btc.toFixed(18)}</>,
+        sortBy: 'price_btc',
+        sorter: true,
+        renderNode: (row) => (
+          <>{Number.parseFloat(String(row.price_btc)).toFixed(10)}</>
+        ),
       },
       {
         title: 'Market Cap Rank',
         key: 'market_cap_rank',
+        sortBy: 'market_cap_rank',
+        sorter: true,
         sx: {
           textAlign: 'center',
         },
